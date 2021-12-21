@@ -7,14 +7,14 @@ using CRMProject.Entity;
 namespace CRMProject.Contollers
 {
     /// <summary>
-    ///     Контролер для обратки запросов авторизации.
+    ///     Контроллер для обработки запросов авторизации.
     /// </summary>
     public class ContollerUser
     {
         /// <summary>
         ///     Строка подключения.
         /// </summary>
-        private readonly string StringConnction = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\heart\source\repos\CRM_system\CRMProject\Database.mdf;Integrated Security=True";
+        private readonly string StringConnction = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Shik-\source\repos\CRM-System\CRMProject\Database.mdf;Integrated Security=True";
 
         /// <summary>
         ///     Берет данные с БД, по логину и паролю.

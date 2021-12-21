@@ -7,7 +7,7 @@ namespace CRMProject.Contollers
     public class ControllerClients
     {
         /// <summary>
-        ///     Флажок для отилчия добавление строки и удаление строки.
+        ///     Флажок для отличия добавления и удаления строки.
         /// </summary>
         private bool NewRowAdding { get; set; }
 
@@ -26,7 +26,7 @@ namespace CRMProject.Contollers
         }
 
         /// <summary>
-        ///     Контроллер для обработки запросов редоктирования информации.
+        ///     Контроллер для обработки запросов редактирования информации.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="e"></param>

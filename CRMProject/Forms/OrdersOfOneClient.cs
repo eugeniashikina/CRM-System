@@ -18,14 +18,14 @@ namespace CRMProject.Forms
             ListOrdersClient = orders.Contorller(ListOrdersClient, e);
         }
 
-        private void ListOrdersClient_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            ListOrdersClient = orders.UpdateValue(ListOrdersClient);
-        }
-
         private void ListOrdersClient_UserAddedRow(object sender, DataGridViewRowEventArgs e)
         {
             ListOrdersClient = orders.AddNewRow(ListOrdersClient);
+        }
+
+        private void button1_Click_1(object sender, System.EventArgs e)
+        {
+            ListOrdersClient = orders.UpdateValue(ListOrdersClient);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace CRMProject.Contollers
     public class ControllerOrdersOfOneClient
     {
         /// <summary>
-        ///     Флажок для отилчия добавление строки и удаление строки.
+        ///     Флажок для отличия добавления строки и удаления строки.
         /// </summary>
         private bool NewRowAdding { get; set; }
 
@@ -20,16 +20,22 @@ namespace CRMProject.Contollers
         {
             if (id != 0)
             {
-                string sql = "SELECT *, 'Delete' AS [Delete] FROM Orders WHERE Id_client='" + id + "'";
+                string sql = "SELECT Id_order, Data_order, Product.Name, Orders.Count, Client.Name" +
+                    " FROM Orders" +
+                    " LEFT JOIN Product ON Orders.Id_product = Product.Id_product" +
+                    " LEFT JOIN Client ON Orders.Id_client = Client.Id" +
+                    " WHERE Id_client='" + id + "'" +
+                    " ORDER BY Orders.Data_order";
                 db = new HandlerDBOrdersOfOneClient("Orders", sql, data);
                 data = db.GetInfoAboutTable();
             }
             else MessageBox.Show("Выбирите id клиента для просмотра его заказов", "Ошибка!", MessageBoxButtons.OK);
+
             return data;
         }
 
         /// <summary>
-        ///     Контроллер для обработки запросов редоктирования информации.
+        ///     Контроллер для обработки запросов редактирования информации.
         /// </summary>
         /// <param name="data"></param>
         /// <param name="e"></param>
@@ -57,7 +63,7 @@ namespace CRMProject.Contollers
                 DataGridViewRow row = dataGrid.Rows[lastRow];
                 DataGridViewLinkCell link = new DataGridViewLinkCell();
                 dataGrid[5, lastRow] = link;
-                row.Cells["Delete"].Value = "Insert";
+                row.Cells["Command"].Value = "Insert";
             }
             return dataGrid;
         }
@@ -73,7 +79,7 @@ namespace CRMProject.Contollers
                 DataGridViewRow EditingRow = dataGrid.Rows[rowIndex];
                 DataGridViewLinkCell link = new DataGridViewLinkCell();
                 dataGrid[5, rowIndex] = link;
-                EditingRow.Cells["Delete"].Value = "Update";
+                EditingRow.Cells["Command"].Value = "Update";
             }
             return dataGrid;
         }

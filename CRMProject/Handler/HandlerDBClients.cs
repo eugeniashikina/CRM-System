@@ -30,13 +30,13 @@ namespace CRMProject.Handler
         /// <returns> Возвращает информацию данной Table </returns>
         public DataGridView GetInfoAboutTable()
         {
-            SqlDataAdapter = new SqlDataAdapter(SqlRequest, Connection);
-            SqlBuilder = new SqlCommandBuilder(SqlDataAdapter);
+            DataAdapter = new SqlDataAdapter(SqlRequest, Connection);
+            SqlBuilder = new SqlCommandBuilder(DataAdapter);
             SqlBuilder.GetInsertCommand();
             SqlBuilder.GetDeleteCommand();
             SqlBuilder.GetUpdateCommand();
             DataSet = new DataSet();
-            SqlDataAdapter.Fill(DataSet, NameTableDataBase);
+            DataAdapter.Fill(DataSet, NameTableDataBase);
             Data.DataSource = DataSet.Tables[NameTableDataBase];
             SetLinkCells();
             return Data;
@@ -60,7 +60,7 @@ namespace CRMProject.Handler
         private void ReloadData()
         {
             DataSet.Tables[NameTableDataBase].Clear();
-            SqlDataAdapter.Fill(DataSet, NameTableDataBase);
+            DataAdapter.Fill(DataSet, NameTableDataBase);
             Data.DataSource = DataSet.Tables[NameTableDataBase];
             SetLinkCells();
         }
@@ -104,7 +104,7 @@ namespace CRMProject.Handler
             DataSet.Tables[NameTableDataBase].Rows.Add(row);
             DataSet.Tables[NameTableDataBase].Rows.RemoveAt(DataSet.Tables[NameTableDataBase].Rows.Count - 1);
             Data.Rows.RemoveAt(Data.Rows.Count - 2);
-            SqlDataAdapter.Update(DataSet, NameTableDataBase);
+            DataAdapter.Update(DataSet, NameTableDataBase);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace CRMProject.Handler
             {
                 Data.Rows.RemoveAt(e.RowIndex);
                 DataSet.Tables[NameTableDataBase].Rows[e.RowIndex].Delete();
-                SqlDataAdapter.Update(DataSet, NameTableDataBase);
+                DataAdapter.Update(DataSet, NameTableDataBase);
             }
         }
 
@@ -132,7 +132,7 @@ namespace CRMProject.Handler
             DataSet.Tables[NameTableDataBase].Rows[r]["Number_phone"] = Data.Rows[r].Cells["Number_phone"].Value;
             DataSet.Tables[NameTableDataBase].Rows[r]["Id_user"] = Data.Rows[r].Cells["Id_user"].Value;
             Data.Rows[r].Cells[6].Value = "Delete";
-            SqlDataAdapter.Update(DataSet, NameTableDataBase);
+            DataAdapter.Update(DataSet, NameTableDataBase);
         }
     }
 }

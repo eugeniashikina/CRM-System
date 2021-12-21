@@ -1,4 +1,4 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -13,7 +13,7 @@ namespace CRMProject.Handler
         public HandlerDBOrdersOfOneClient(string nameTable, string sql, DataGridView data)
         {
             Data = data;
-            SqlRequest = sql;
+            SqlDataRequest = sql;
             NameTableDataBase = nameTable;
             Connection = new SqlConnection(StringConnction);
             Connection.Open();
@@ -25,15 +25,28 @@ namespace CRMProject.Handler
         /// <returns> Возвращает информацию данной Table </returns>
         public DataGridView GetInfoAboutTable()
         {
-            SqlDataAdapter = new SqlDataAdapter(SqlRequest, Connection);
-            SqlBuilder = new SqlCommandBuilder(SqlDataAdapter);
-            SqlBuilder.GetInsertCommand();
-            SqlBuilder.GetDeleteCommand();
-            SqlBuilder.GetUpdateCommand();
-            DataSet = new DataSet();
-            SqlDataAdapter.Fill(DataSet, NameTableDataBase);
-            Data.DataSource = DataSet.Tables[NameTableDataBase];
+            Data.Rows.Clear();
+            Command = new SqlCommand(SqlDataRequest, Connection);
+            DataReader = Command.ExecuteReader();
+            List<string[]> data = new List<string[]>();
+
+            while (DataReader.Read())
+            {
+                data.Add(new string[6]);
+
+                data[data.Count - 1][0] = DataReader[0].ToString();
+                data[data.Count - 1][1] = DataReader[1].ToString();
+                data[data.Count - 1][2] = DataReader[2].ToString();
+                data[data.Count - 1][3] = DataReader[3].ToString();
+                data[data.Count - 1][4] = DataReader[4].ToString();
+            }
+            DataReader.Close();
+
+            foreach (var s in data)
+                Data.Rows.Add(s);
+
             SetLinkCells();
+
             return Data;
         }
 
@@ -42,22 +55,12 @@ namespace CRMProject.Handler
         /// </summary>
         private void SetLinkCells()
         {
-            for (int i = 0; i < Data.Rows.Count; i++)
+            for (int i = 0; i < Data.Rows.Count - 1; i++)
             {
                 DataGridViewLinkCell linkCell = new DataGridViewLinkCell();
                 Data[5, i] = linkCell;
-            };
-        }
-
-        /// <summary>
-        /// Обновление таблицы клиентов в БД
-        /// </summary>
-        private void ReloadData()
-        {
-            DataSet.Tables[NameTableDataBase].Clear();
-            SqlDataAdapter.Fill(DataSet, NameTableDataBase);
-            Data.DataSource = DataSet.Tables[NameTableDataBase];
-            SetLinkCells();
+                Data[5, i].Value = "Delete";
+            }
         }
 
         /// <summary>
@@ -73,31 +76,53 @@ namespace CRMProject.Handler
             }
             else if (task == "Insert")
             {
-                InsertData(e);
+                InsertData();
             }
             else if (task == "Update")
             {
                 UpdateData(e);
             }
-            ReloadData();
+            GetInfoAboutTable();
             return Data;
         }
 
         /// <summary>
         ///     Добавляет данные в таблицу.
         /// </summary>
-        private void InsertData(DataGridViewCellEventArgs e)
+        private void InsertData()
         {
             int rowIndex = Data.Rows.Count - 2;
-            DataRow row = DataSet.Tables[NameTableDataBase].NewRow();
-            row["Data_order"] = Data.Rows[rowIndex].Cells["Data_Order"].Value;
-            row["Id_product"] = Data.Rows[rowIndex].Cells["Id_product"].Value;
-            row["Count"] = Data.Rows[rowIndex].Cells["Count"].Value;
-            Data.Rows[e.RowIndex].Cells[5].Value = "Delete";
-            DataSet.Tables[NameTableDataBase].Rows.Add(row);
-            DataSet.Tables[NameTableDataBase].Rows.RemoveAt(DataSet.Tables[NameTableDataBase].Rows.Count - 1);
-            Data.Rows.RemoveAt(Data.Rows.Count - 2);
-            SqlDataAdapter.Update(DataSet, NameTableDataBase);
+            string date = Data.Rows[rowIndex].Cells["Data_order"].Value.ToString();
+            string nameProduct = Data.Rows[rowIndex].Cells["Id_product"].Value.ToString();
+            string count = Data.Rows[rowIndex].Cells["Count"].Value.ToString();
+            string nameClient = Data.Rows[rowIndex].Cells["Id_client"].Value.ToString();
+
+            SqlRequest = "SELECT Id FROM Client WHERE Name=N'" + nameClient + "'";
+            string idClient = RequestSql();
+
+            SqlRequest = "SELECT Id_product FROM Product WHERE Name=N'" + nameProduct + "'";
+            string idProduct = RequestSql();
+
+
+            SqlRequest = "INSERT INTO Orders (Data_order, Id_product, Count, Id_client) " +
+                "VALUES (N'" + date + "', " + idProduct + ", " + count + ", " + idClient + ")";
+            Command = new SqlCommand(SqlRequest, Connection);
+            Command.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        ///     Выполняет запрос.
+        /// </summary>
+        /// <returns>Переменную по запросу</returns>
+        private string RequestSql()
+        {
+            string value = string.Empty;
+            Command = new SqlCommand(SqlRequest, Connection);
+            DataReader = Command.ExecuteReader();
+            if (DataReader.Read())
+                value = DataReader[0].ToString();
+            DataReader.Close();
+            return value;
         }
 
         /// <summary>
@@ -107,9 +132,11 @@ namespace CRMProject.Handler
         {
             if (MessageBox.Show("Удалить данный заказ?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                SqlRequest = "DELETE FROM Orders WHERE Id_order=" + Data.Rows[e.RowIndex].Cells["Id_order"].Value;
+                Command = new SqlCommand(SqlRequest, Connection);
+                Command.ExecuteNonQuery();
                 Data.Rows.RemoveAt(e.RowIndex);
-                DataSet.Tables[NameTableDataBase].Rows[e.RowIndex].Delete();
-                SqlDataAdapter.Update(DataSet, NameTableDataBase);
+                DataReader.Close();
             }
         }
 
@@ -118,12 +145,27 @@ namespace CRMProject.Handler
         /// </summary>
         private void UpdateData(DataGridViewCellEventArgs e)
         {
-            int r = e.RowIndex;
-            DataSet.Tables[NameTableDataBase].Rows[r]["Data_order"] = Data.Rows[r].Cells["Data_order"].Value;
-            DataSet.Tables[NameTableDataBase].Rows[r]["Id_product"] = Data.Rows[r].Cells["Id_product"].Value;
-            DataSet.Tables[NameTableDataBase].Rows[r]["Count"] = Data.Rows[r].Cells["Count"].Value;
-            Data.Rows[r].Cells[5].Value = "Delete";
-            SqlDataAdapter.Update(DataSet, NameTableDataBase);
+            int rowIndex = e.RowIndex;
+            string id = Data.Rows[rowIndex].Cells["Id_order"].Value.ToString();
+            string date = Data.Rows[rowIndex].Cells["Data_order"].Value.ToString();
+            string nameProduct = Data.Rows[rowIndex].Cells["Id_product"].Value.ToString();
+            string count = Data.Rows[rowIndex].Cells["Count"].Value.ToString();
+            string nameClient = Data.Rows[rowIndex].Cells["Id_client"].Value.ToString();
+
+            SqlRequest = "SELECT Id FROM Client WHERE Name=N'" + nameClient + "'";
+            string idClient = RequestSql();
+
+            SqlRequest = "SELECT Id_product FROM Product WHERE Name=N'" + nameProduct + "'";
+            string idProduct = RequestSql();
+
+            SqlRequest = "UPDATE Orders SET " +
+                "Data_order=N'" + date + "', " +
+                "Id_product=" + idProduct + ", " +
+                "Count =" + count + ", " +
+                "Id_client=" + idClient +
+                " WHERE Id_order=" + id;
+            Command = new SqlCommand(SqlRequest, Connection);
+            Command.ExecuteNonQuery();
         }
     }
 }

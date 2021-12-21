@@ -12,7 +12,7 @@ namespace CRMProject.Forms
         private ControllerClients clients;
 
         /// <summary>
-        ///     Значение выбранное пользователем в DataGridView.
+        ///     Значение, выбранное пользователем в DataGridView.
         /// </summary>
         private int Id;
 
