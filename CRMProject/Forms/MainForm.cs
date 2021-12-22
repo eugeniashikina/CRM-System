@@ -26,7 +26,7 @@ namespace CRMProject.Forms
             auth.ShowDialog();
             Show();
             ListClient.Enabled = true;
-            Report.Enabled = true;
+            Authorization.Enabled = false;
         }
 
         /// <summary>
@@ -34,19 +34,10 @@ namespace CRMProject.Forms
         /// </summary>
         public void ListClientClick(object sender, EventArgs e)
         {
+            Hide();
             ListClientForm client = new ListClientForm();
             client.ShowDialog();
             client.Close();
-        }
-
-        /// <summary>
-        /// Метод для просмотра отчетов
-        /// </summary>
-        public void ReportClick(object sender, EventArgs e)
-        {
-            ReportForm rep = new ReportForm();
-            rep.ShowDialog();
-            rep.Close();
         }
     }
 }

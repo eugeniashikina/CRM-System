@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using CRMProject.Contollers;
+using System.Windows.Forms;
 
 namespace CRMProject.Forms
 {
@@ -10,9 +11,11 @@ namespace CRMProject.Forms
         /// <summary>
         /// Инициализация формы для просмотра отчетов
         /// </summary>
-        public ReportForm()
+        public ReportForm(int id)
         {
             InitializeComponent();
+            ControllerReports reports = new ControllerReports();
+            Report = reports.GetInfoAboutOrders(Report, id);
         }
     }
 }

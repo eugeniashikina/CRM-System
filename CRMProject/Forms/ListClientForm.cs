@@ -12,7 +12,7 @@ namespace CRMProject.Forms
         private ControllerClients clients;
 
         /// <summary>
-        ///     Значение, выбранное пользователем в DataGridView.
+        ///     Значение выбранное пользователем в DataGridView.
         /// </summary>
         private int Id;
 
@@ -50,7 +50,7 @@ namespace CRMProject.Forms
         private void OpenOrders_Click(object sender, EventArgs e)
         {
             OrdersOfOneClient orders = new OrdersOfOneClient(Id);
-            if(Id != 0)
+            if (Id != 0)
             {
                 Hide();
                 orders.ShowDialog();
@@ -65,6 +65,17 @@ namespace CRMProject.Forms
             else
                 Id = 0;
 
+        }
+
+        private void Report_Click(object sender, EventArgs e)
+        {
+            ReportForm report = new ReportForm(Id);
+            if (Id != 0)
+            {
+                Hide();
+                report.ShowDialog();
+                Show();
+            }
         }
     }
 }

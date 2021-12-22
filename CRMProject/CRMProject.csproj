@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contollers\ControllerOrdersOfOneClient.cs" />
+    <Compile Include="Contollers\ControllerReports.cs" />
     <Compile Include="Forms\AuthorizationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +95,7 @@
     <Compile Include="Handler\HandlerDataBase.cs" />
     <Compile Include="Handler\HandlerDBClients.cs" />
     <Compile Include="Handler\HandlerDBOrdersOfOneClient.cs" />
+    <Compile Include="Handler\HandlerDBReports.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\ReportForm.cs">
