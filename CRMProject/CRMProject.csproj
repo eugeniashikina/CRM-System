@@ -92,6 +92,12 @@
     <Compile Include="Forms\OrdersOfOneClient.Designer.cs">
       <DependentUpon>OrdersOfOneClient.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ReportAllClients.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportAllClients.Designer.cs">
+      <DependentUpon>ReportAllClients.cs</DependentUpon>
+    </Compile>
     <Compile Include="Handler\HandlerDataBase.cs" />
     <Compile Include="Handler\HandlerDBClients.cs" />
     <Compile Include="Handler\HandlerDBOrdersOfOneClient.cs" />
@@ -115,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OrdersOfOneClient.resx">
       <DependentUpon>OrdersOfOneClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReportAllClients.resx">
+      <DependentUpon>ReportAllClients.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

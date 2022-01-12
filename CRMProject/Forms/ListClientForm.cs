@@ -77,5 +77,13 @@ namespace CRMProject.Forms
                 Show();
             }
         }
+
+        private void ReportAllClients_Click(object sender, EventArgs e)
+        {
+            ReportAllClients reports = new ReportAllClients();
+            Hide();
+            reports.ShowDialog();
+            Show();
+        }
     }
 }

@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.OpenOrders = new System.Windows.Forms.Button();
             this.Report = new System.Windows.Forms.Button();
+            this.ReportAllClients = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ListClient)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,19 +75,30 @@
             // 
             // Report
             // 
-            this.Report.Location = new System.Drawing.Point(162, 277);
+            this.Report.Location = new System.Drawing.Point(134, 276);
             this.Report.Name = "Report";
-            this.Report.Size = new System.Drawing.Size(85, 28);
+            this.Report.Size = new System.Drawing.Size(124, 31);
             this.Report.TabIndex = 4;
-            this.Report.Text = "Отчеты";
+            this.Report.Text = "Отчет для 1 клиента";
             this.Report.UseVisualStyleBackColor = true;
             this.Report.Click += new System.EventHandler(this.Report_Click);
+            // 
+            // ReportAllClients
+            // 
+            this.ReportAllClients.Location = new System.Drawing.Point(281, 277);
+            this.ReportAllClients.Name = "ReportAllClients";
+            this.ReportAllClients.Size = new System.Drawing.Size(162, 31);
+            this.ReportAllClients.TabIndex = 5;
+            this.ReportAllClients.Text = "Отчеты по всем клиентам";
+            this.ReportAllClients.UseVisualStyleBackColor = true;
+            this.ReportAllClients.Click += new System.EventHandler(this.ReportAllClients_Click);
             // 
             // ListClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(724, 323);
+            this.Controls.Add(this.ReportAllClients);
             this.Controls.Add(this.Report);
             this.Controls.Add(this.OpenOrders);
             this.Controls.Add(this.label1);
@@ -105,5 +117,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button OpenOrders;
         private System.Windows.Forms.Button Report;
+        private System.Windows.Forms.Button ReportAllClients;
     }
 }

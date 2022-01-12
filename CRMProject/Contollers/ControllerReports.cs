@@ -30,5 +30,25 @@ namespace CRMProject.Contollers
 
             return data;
         }
+
+        /// <summary>
+        /// Получение информации о заказах всех клиентов.
+        /// </summary>
+        /// <returns> Возвращает информацию о клиентах </returns>
+        public DataGridView GetInfoAboutOrdersAllClints(DataGridView data)
+        {
+            string sql = "SELECT Client.Name," +
+            " COUNT(DISTINCT Orders.Id_order) AS Count," +
+            " SUM(Orders.Count * Product.Cost) AS Cost" +
+            " FROM Orders" +
+            " LEFT JOIN Product ON Orders.Id_product = Product.Id_product" +
+            " LEFT JOIN Client ON Orders.Id_client = Client.Id" +
+            " Group By Client.Name" +
+            " ORDER BY Cost DESC";
+            db = new HandlerDBReports("Orders", sql, data);
+            data = db.GetInfoAboutTable();
+
+            return data;
+        }
     }
 }
